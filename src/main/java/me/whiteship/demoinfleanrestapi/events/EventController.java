@@ -3,6 +3,7 @@ package me.whiteship.demoinfleanrestapi.events;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -37,11 +38,11 @@ public class EventController {
         Event event = modelMapper.map(eventDto, Event.class);
         event.update();
         Event newEvent = this.eventRepository.save(event);
-        URI createUri = linkTo(EventController.class)
-                .slash(newEvent.getId())
-                .toUri();
-        System.out.println("createUri = " + createUri);
-        return ResponseEntity.created(createUri).body(event);
+
+        EventResource eventResource = new EventResource(event);
+        WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class)
+                .slash(event.getId());
+        return ResponseEntity.created(selfLinkBuilder.toUri()).body(eventResource);
     }
 
 }
