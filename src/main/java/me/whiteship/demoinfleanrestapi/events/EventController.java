@@ -3,6 +3,7 @@ package me.whiteship.demoinfleanrestapi.events;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -43,26 +44,19 @@ public class EventController {
         Event newEvent = this.eventRepository.save(event);
 
         EventResource eventResource = new EventResource(event);
-        WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class)
-                .slash(event.getId());
-        Link link = linkTo(EventController.class)
-                .withSelfRel();
-        System.out.println("link.toString() = " + link.toString());
-        Link link1 =
-                linkTo(
-                        methodOn(
-                        EventController.class
-                        )
-                .testMapping()
-                )
-                .withRel("testMapped");
-        System.out.println("link1 = " + link1.toString());
-        return ResponseEntity.created(selfLinkBuilder.toUri()).body(eventResource);
+        WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class).slash(event.getId());
+        URI createdUri = selfLinkBuilder.toUri();
+        eventResource.add(
+                selfLinkBuilder.withSelfRel(),
+                linkTo(EventController.class).withRel("query-events"),
+                selfLinkBuilder.withRel("update-event"),
+                Link.of("/docs/index.html#resource-events-create").withRel("profile"));
+        return ResponseEntity.created(createdUri).body(eventResource);
     }
 
-    @GetMapping("test")
-    public ResponseEntity testMapping(){
-        return ResponseEntity.ok("hello");
-    }
+//    @GetMapping("test")
+//    private ResponseEntity testMapping(){
+//        return ResponseEntity.ok("hello");
+//    }
 
 }
