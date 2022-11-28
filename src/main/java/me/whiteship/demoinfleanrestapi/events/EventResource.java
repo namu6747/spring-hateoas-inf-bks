@@ -16,6 +16,7 @@ public class EventResource extends EntityModel<Event> {
 
     public EventResource(Event event, Link... links){
         super(event, Arrays.asList(links));
+        add(linkTo(EventController.class).slash(event.getId()).withSelfRel());
 //        WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class)
 //                .slash(event.getId());
 //        add(selfLinkBuilder.withSelfRel());

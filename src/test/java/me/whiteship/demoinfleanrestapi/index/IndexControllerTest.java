@@ -1,6 +1,5 @@
-package me.whiteship.demoinfleanrestapi.intex;
+package me.whiteship.demoinfleanrestapi.index;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import me.whiteship.demoinfleanrestapi.common.RestDocsConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
