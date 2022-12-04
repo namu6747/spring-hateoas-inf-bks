@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.whiteship.demoinfleanrestapi.accounts.Account;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -32,4 +33,6 @@ public class EventDto {
     private int maxPrice;
     @Min(0)
     private int limitOfEnrollment;
+
+    private Account manager;
 }

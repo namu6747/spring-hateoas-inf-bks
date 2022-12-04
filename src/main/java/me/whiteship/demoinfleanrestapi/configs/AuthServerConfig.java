@@ -2,6 +2,7 @@ package me.whiteship.demoinfleanrestapi.configs;
 
 import lombok.RequiredArgsConstructor;
 import me.whiteship.demoinfleanrestapi.accounts.AccountService;
+import me.whiteship.demoinfleanrestapi.common.AppProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     private final AuthenticationManager authenticationManager;
     private final TokenStore tokenStore;
     private final AccountService accountService;
+    private final AppProperties appProperties;
 
 
     @Override
@@ -32,11 +34,11 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("myApp")
+                .withClient(appProperties.getClientId())
                 // 이 인증 서버가 지원할 그랜트 타입 지정
                 .authorizedGrantTypes("password","refresh_token")
                 .scopes("read","write") // 임의의 값
-                .secret(this.passwordEncoder.encode("pass"))
+                .secret(this.passwordEncoder.encode(appProperties.getClientSecret()))
                 .accessTokenValiditySeconds(10 * 60)
                 .refreshTokenValiditySeconds(6 * 10 * 60)
                 ;

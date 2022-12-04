@@ -1,7 +1,9 @@
 package me.whiteship.demoinfleanrestapi.configs;
 
 import me.whiteship.demoinfleanrestapi.accounts.Account;
+import me.whiteship.demoinfleanrestapi.accounts.AccountRepository;
 import me.whiteship.demoinfleanrestapi.accounts.AccountService;
+import me.whiteship.demoinfleanrestapi.common.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -29,23 +31,28 @@ public class AppConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    /*@Bean
+    @Bean
     public ApplicationRunner applicationRunner(){
         return new ApplicationRunner() {
             @Autowired
             AccountService accountService;
 
+            @Autowired
+            AppProperties appProperties;
+
             @Override
             public void run(ApplicationArguments args) throws Exception {
-                String username = "keesun@email.com";
-                String password = "keesun";
-                Account account = Account.builder()
-                        .email(username)
-                        .password(password)
+                accountService.saveAccount(Account.builder()
+                        .email(appProperties.getAdminUsername())
+                        .password(appProperties.getAdminPassword())
                         .roles(Set.of(ADMIN,USER))
-                        .build();
-                accountService.saveAccount(account);
+                        .build());
+                accountService.saveAccount(Account.builder()
+                        .email(appProperties.getUserUsername())
+                        .password(appProperties.getUserPassword())
+                        .roles(Set.of(USER))
+                        .build());
             }
         };
-    }*/
+    }
 }

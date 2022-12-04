@@ -1,11 +1,13 @@
 package me.whiteship.demoinfleanrestapi.events;
 
 import junitparams.Parameters;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 public class EventTest {
 
     @Test
